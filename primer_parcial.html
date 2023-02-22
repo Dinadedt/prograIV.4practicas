@@ -20,25 +20,25 @@
             <div class="row p-1" >
                 <div class="col-3 col-md-2">Autor :</div>
                 <div class="col-9 col-md-3">
-                  <input class="form-control" type="text" v-model="libro.nombre" name="txtNombreLibro" id="txtNombreLibro">
+                  <input class="form-control" type="text" v-model="libro.autor" name="txtNombreLibro" id="txtNombreLibro">
                 </div>
               </div>
             <div class="row p-1" >
               <div class="col-3 col-md-2">idAutor :</div>
               <div class="col-9 col-md-3">
-                <input class="form-control" type="text" v-model="libro.idautor" name="txtidAutorLibro" id="txtidAutorLibro">
+                <input class="form-control" type="text" v-model="libro.idAutor" name="txtidAutorLibro" id="txtidAutorLibro">
             </div>
           </div>
           <div class="row p-1" >
             <div class="col-3 col-md-2">Codigo :</div>
             <div class="col-9 col-md-3">
-              <input class="form-control" type="text" v-model="Libro.codigo" name="txtCodigoLibro" id="txtCodigoLibro">
+              <input class="form-control" type="text" v-model="libro.codigo" name="txtCodigoLibro" id="txtCodigoLibro">
           </div>
         </div>
         <div class="row p-1" >
             <div class="col-3 col-md-2">Nonbre :</div>
             <div class="col-9 col-md-3">
-              <input class="form-control" type="text" v-model="libro.Nonbre" name="txtNonbreLibri" id="txtNonbreLibro">
+              <input class="form-control" type="text" v-model="libro.nonbre" name="txtNonbreLibri" id="txtNonbreLibro">
           </div>
         </div>
         <div class="row p-1">
@@ -51,6 +51,14 @@
             <div class="col-3 col-md-2">Telefono:</div>
             <div class="col-9 col-md-6">
               <input class="form-control" type="text" v-model="libro.telefono" name="txtTelefonoLibro" id="txtTelefonoLibro">
+            </div>
+          </div>
+          <div class="row p-1">
+            <div class="col col-md-6">
+              <input class="btn btn-success" type="submit" value="Guardar Datos">
+            </div>
+            <div class="col col-md-6">
+              <input class="btn btn-warning" type="reset" value="Nuevo Registro">
             </div>
           </div>
            </form>
@@ -68,27 +76,27 @@
                   <thead>
                     <tr>
                       <th>BUSCAR</th>
-                      <th colspan="2"><input type="text" @keyup="listarLibros()" class="form-control" 
+                      <th colspan="2"><input type="text" @keyup="listarLibro()" class="form-control" 
                         v-model="buscar" placeholder="Buscar por Libro"></th>
                     </tr>
                     <tr>
-                      <th>Autor</th>
+                      <th>autor</th>
                       <th>idAutor</th>
-                      <th>Codigo</th>
-                      <th>Nonbre</th>
-                      <th>Pais</th>
-                      <th>Telefono</th>
+                      <th>codigo</th>
+                      <th>nonbre</th>
+                      <th>pais</th>
+                      <th>telefono</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="libro in libros" @click='modificarAlumno(alumno)' :key="alumno.idAlumno" >
-                      <td>{{Libro.Autor}}</td>
-                      <td>{{Libro.idAutor}}</td>
-                      <td>{{Libro.codigo}}</td>
-                      <td>{{Libro.Nonbre}}</td>
-                      <td>{{Libro.Pais}}</td>
-                      <td>{{Libro.Telefono}}</td>
-                      <td><button @click.prevent="eliminarLibro(Libro)" class="btn btn-danger">Eliminar</button></td>
+                    <tr v-for="libro in libros" @click='modificarLibro(libro)' :key="libro.idAutor" >
+                      <td>{{libro.autor}}</td>
+                      <td>{{libro.idAutor}}</td>
+                      <td>{{libro.codigo}}</td>
+                      <td>{{libro.nonbre}}</td>
+                      <td>{{libro.pais}}</td>
+                      <td>{{libro.telefono}}</td>
+                      <td><button @click.prevent="eliminarLibro(libro)" class="btn btn-danger">Eliminar</button></td>
                     </tr>
                   </tbody>
                 </table>
@@ -111,11 +119,11 @@
           return{
             db:'',
             buscar:'',
-            Libro:[],
+            libros:[],
             accion: 'nuevo',
-            Libro:{
+            libro:{
               autor:'',
-              idautor:'',
+              idAutor:'',
               codigo:'',
               nonbre:'',
               pais:'',
@@ -125,49 +133,51 @@
           }
         },
         methods:{
-          nuevolibro(){
+          nuevoLibro(){
             this.accion = 'nuevo';
             this.libro.autor = '';
-            this.libro.idautor = '';
+            this.libro.idAutor = '';
             this.libro.codigo = '';
             this.libro.nonbre = '';
             this.libro.pais = '';
             this.libro.telefono = '';
             
           },
-          modificarlibro(libro){
+          modificarLibro(libro){
             this.accion = 'modificar';
             this.libro = libro;
             
           },
-          guardarlibro(){
-            this.listarlibro();
-                    if( this.accion==='nuevo' ){
-                        this.libro.idlibro = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
-                        this.libro.push( JSON.parse(JSON.stringify(this.libro)) );
-                    }else if(this.accion==='modificar'){
-                        //hacer la busqueda y modificar el registro
-                        let index = this.libro.findIndex(libro=>libro.idlibro==this.libro.idlibro);
-                        this.libro[index] = JSON.parse(JSON.stringify(this.libro));
-                    }else if(this.accion==='eliminar'){
-                        let index = this.libro.findIndex(libro=>libro.idlibro==this.libro.idlibro);
-                        this.libro.splice(index, 1);
-                    }
-                    localStorage.setItem('libro', JSON.stringify(this.libro));
-                    this.nuevoAlumno();
-
+          guardarLibro(){
+            if(this.libro.autor=='' || this.libro.nonbre==''){
+            console.log('Por favor ingrese los datos correspondientes');
+            return;
+          }
+          let store = this.abrirStore('tbllibro','readwrite');
+          if(this.accion==='nuevo'){
+            this.libro.idAutor = new Date().getTime().toString(16); //las cantidad milisegundo y lo convierte en hexadecimal
+            
+          }
+          let query = store.put( JSON.parse( JSON.stringify(this.libro)));
+          query.onsuccess = resp=>{
+            this.nuevoLibro();
+            this.listarLibro();
+          };
+          query.onerror = err=>{
+            console.error('ERROR al guardar libro', err);
+          };
 
             
           },
-          eliminarlibro(libro){
+          eliminarLibro(libro){
             if(confirm(`Esta seguro de eliminar el docente ${libro.nombre}?`)){
               this.accion = "eliminar";
               this.libro = libro;
-              this.guardarlibro();
+              this.guardarLibro();
     
             }
           },
-          listarlibro(){
+          listarLibro(){
             let store = this.abrirStore('tbllibro','readonly'),
                 data = store.getAll();
             data.onsuccess = resp=>{
@@ -178,15 +188,15 @@
             let indexDB = indexedDB.open('db_codigo_estudiante',1);
             indexDB.onupgradeneeded = e=>{
               let req = e.target.result,
-                tbllibro = req.createObjectStore('tbllibro',{keyPath: 'idlibro'}),
-                idMateria = req.createObjectStore('tblmateria',{keyPath: 'idmateria'});
+                tbllibro = req.createObjectStore('tbllibro',{keyPath: 'idAutor'});
                 
-                tbllibro.createIndex('idlibro','idlibro',{unique:true});
-                tbllibro.createIndex('codigo','codigo',{unique:true});
+                
+                tbllibro.createIndex('idAutor','idAutor',{unique:true});
+              
             };
             indexDB.onsuccess = e=>{
               this.db = e.target.result;
-              this.listarlibro();
+              this.listarLibro();
             };
             indexDB.onerror = e=>{
               console.error('ERROR al crear, abrir la BD',e);
