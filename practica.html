@@ -1,237 +1,91 @@
-<!DOCTYPE html><!--definision de tipo de documento-->
-<html lang="en"><!--apertura de la pagina html-->
-<head><!--encabesado de la pagina html-->
-    <meta charset="UTF-8"><!--codificasion de caracteres espesiales-->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"><!--IE-->
+<!DOCTYPE html><!-- Definicion de tipo de documento -->
+<html lang="en"><!-- Apertura de la pagina html -->
+<head><!-- Encabezado de la pagina html -->
+    <meta charset="UTF-8"><!-- Codificacion de Caracteres especiales  -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><!-- IE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-    <title>::.. APP ACADEMICA ..::</title>
+    <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <title>...APP ACADEMICA...</title>
 </head>
 
-<body><!--contenido de la pagina html-->
-
-<div class="container" id="app">
-  <div class="row justify-content-md-center">
-    <div classs="col-12 col-md-6">
-      <div class="card border-primary" >
-        <div class="card-header bg-primary text-white">Registro de Alumno</div>
-        <div class="card-body">
-          <form id="frmAlumno" @sudmit.prevent="guardarAlumno" @reset.prevent="nuevoAlumno()">
-            <div class="row p-1" >
-            <div class="col-3 col-md-2">CODIGO :</div>
-            <div class="col-9 col-md-3">
-              <input class="form-control" type="text" v-model="alumno.codigo" name="txtCodigoAlumno" id="txtCodigoAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col-3 col-md-2">NOMBRE:</div>
-            <div class="col-9 col-md-6">
-              <input class="form-control" type="text" v-model="alumno.nombre" name="txtNombreAlumno" id="txtNombreAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col-3 col-md-2">DIRECCION:</div>
-            <div class="col-9 col-md-6">
-              <input class="form-control" type="text" v-model="alumno.direccion" name="txtDireccionAlumno" id="txtDireccionAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col-3 col-md-2">MUNICIPIO:</div>
-            <div class="col-9 col-md-6">
-              <input class="form-control" type="text" v-model="alumno.municipio" name="txtMunicipioAlumno" id="txtMunicipioAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col-3 col-md-2">DEPARTAMENTO:</div>
-            <div class="col-9 col-md-6">
-              <input class="form-control" type="text" v-model="alumno.departamento" name="txtDepartamentoAlumno" id="txtDepartamentoAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col-3 col-md-2">TELEFONO:</div>
-            <div class="col-9 col-md-6">
-              <input class="form-control" type="text" v-model="alumno.telefono" name="txtTelefonoAlumno" id="txtTelefonoAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col-3 col-md-2">FECHA DE NACIMIENTO:</div>
-            <div class="col-9 col-md-6">
-              <input class="form-control" type="date" v-model="alumno.fechaDeNacimiento" name="txtFechaDeNacimientoAlumno" id="txtFechaDeNacimientoAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col-3 col-md-2">SEXO:</div>
-            <div class="col-9 col-md-6">
-              <input class="form-control" type="text" v-model="alumno.sexo" name="txtSexoAlumno" id="txtSexoAlumno">
-            </div>
-          </div>
-          <div class="row p-1">
-            <div class="col col-md-6">
-              <input class="btn btn-success" type="submit" value="Guardar Datos">
-            </div>
-            <div class="col col-md-6">
-              <input class="btn btn-warning" type="reset" value="Nuevo Registro">
-            </div>
-          </div>
-           </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="row ">
-        <div class="col-12 col-md-10">
-          <div class="card text-bg-light" >
-            <div class="card-header" >CONSULTA DE ALUMNOS</div>
-              <div class="card-body">
-              <form>
-                <table class="table table-dark table-hover">
-                  <thead>
-                    <tr>
-                      <th>BUSCAR</th>
-                      <th colspan="2"><input type="text" @keyup="listarAlumnos()" class="form-control" 
-                        v-model="buscar" placeholder="Buscar por nombre"></th>
-                    </tr>
-                    <tr>
-                      <th>CODIGO</th>
-                      <th>NOMBRE</th>
-                      <th>DIRECCION</th>
-                      <th>MUNICIPIO</th>
-                      <th>DEPARTAMENTO</th>
-                      <th>TELEFONO</th>
-                      <th>FECHA DE NACIMIENTO</th>
-                      <th colspan="2">SEXO</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="alumno in alumnos" @click='modificarAlumno(alumno)' :key="alumno.idAlumno" >
-                      <td>{{alumno.codigo}}</td>
-                      <td>{{alumno.nombre}}</td>
-                      <td>{{alumno.direccion}}</td>
-                      <td>{{alumno.municipio}}</td>
-                      <td>{{alumno.departamento}}</td>
-                      <td>{{alumno.telefono}}</td>
-                      <td>{{alumno.nacimiento}}</td>
-                      <td>{{alumno.sexo}}</td>
-                      <td><button @click.prevent="eliminarAlumno(alumno)" class="btn btn-danger">Eliminar</button></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>  
-    </div>
-  </div>
-  <br>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<body><!-- Contenido de la pagina html -->
   
-  <script>
-      const {createApp} = Vue;
-      createApp({
-        data(){
-          return{
-            db:'',
-            buscar:'',
-            alumnos:[],
-            accion: 'nuevo',
-            alumno:{
-              idAlumno:'',
-              codigo:'',
-              nombre:'',
-              direccion:'',
-              municipio:'',
-              departamento:'',
-              telefono:'',
-              nacimiento:'',
-              sexo:''
-            }
-          }
-        },
-        methods:{
-          nuevoAlumno(){
-            this.accion = 'nuevo';
-            this.alumno.idAlumno = '';
-            this.alumno.codigo = '';
-            this.alumno.nombre = '';
-            this.alumno.direccion = '';
-            this.alumno.municipio = '';
-            this.alumno.departamento = '';
-            this.alumno.telefono = '';
-            this.alumno.nacimiento = '';
-            this.alumno.sexo = '';
-          },
-          modificarAlumno(alumno){
-            this.accion = 'modificar';
-            this.alumno = alumno;
-            
-          },
-          guardarAlumno(){
-            this.listarAlumnos();
-                    if( this.accion==='nuevo' ){
-                        this.alumno.idAlumno = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
-                        this.alumnos.push( JSON.parse(JSON.stringify(this.alumno)) );
-                    }else if(this.accion==='modificar'){
-                        //hacer la busqueda y modificar el registro
-                        let index = this.alumnos.findIndex(alumno=>alumno.idAlumno==this.alumno.idAlumno);
-                        this.alumnos[index] = JSON.parse(JSON.stringify(this.alumno));
-                    }else if(this.accion==='eliminar'){
-                        let index = this.alumnos.findIndex(alumno=>alumno.idAlumno==this.alumno.idAlumno);
-                        this.alumnos.splice(index, 1);
-                    }
-                    localStorage.setItem('alumnos', JSON.stringify(this.alumnos));
-                    this.nuevoAlumno();
+<div class="container" id="app">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">::.. SISTEMA ACADEMICO ..::</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" @click="abrirCerrarFormulario('docente')" href="#">Docentes</a>
+                <a class="nav-link" @click="abrirCerrarFormulario('alumno')" href="#">Alumnos</a>
+                <a class="nav-link" @click="abrirCerrarFormulario('materia')" href="#">Materia</a>
+                <a class="nav-link" @click="abrirCerrarFormulario('matricula')" href="#">Matricula</a>
+                <a class="nav-link" @click="abrirCerrarFormulario('inscripcion')" href="#">Inscripcion</a>
+            </div>
+        </div>
+    </div>
+</nav>
+</div>
+<br>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-            
-          },
-          eliminarAlumno(alumno){
-            if(confirm(`Esta seguro de eliminar el docente ${alumno.nombre}?`)){
-              this.accion = "eliminar";
-              this.alumno = alumno;
-              this.guardarAlumno();
-    
-            }
-          },
-          listarAlumnos(){
-            let store = this.abrirStore('tblalumnos','readonly'),
-                data = store.getAll();
-            data.onsuccess = resp=>{
-              this.alumnos = data.result;
-            };
-          },
-          abrirBD(){
-            let indexDB = indexedDB.open('db_sistema_academico',1);
-            indexDB.onupgradeneeded = e=>{
-              let req = e.target.result,
-                tblalumnos = req.createObjectStore('tblalumnos',{keyPath: 'idAlumno'}),
-                tblmaterias = req.createObjectStore('tblmaterias',{keyPath: 'idMateria'});
-                
-                tblalumnos.createIndex('idAlumno','idAlumno',{unique:true});
-                tblalumnos.createIndex('codigo','codigo',{unique:true});
-            };
-            indexDB.onsuccess = e=>{
-              this.db = e.target.result;
-              this.listarAlumnos();
-            };
-            indexDB.onerror = e=>{
-              console.error('ERROR al crear, abrir la BD',e);
-            };
-          },
-          abrirStore(store,modo){
-            let ltx = this.db.transaction(store,modo);
-            return ltx.objectStore(store);
-          }
-        },
-        created(){
-          this.abrirBD();
-          //this.listarAlumnos();
+<script>
+  const {createApp} = Vue;
+  var db;
+  createApp({
+      data(){
+        return{
+        forms:{
+          alumno:{mostrar:false,},
+          materias:{mostrar:false,},
+          matricula:{mostrar:false,},
+          inscripcion:{mostrar:false,},
         }
-      }).mount('#app')
-    </script>
-      
-    </body>
-    </html>
-
+      }
+    },
+    methods: {
+      abrirCerrarFormulario(form){
+        this.forms[form] = !this.forms[form];
+        cosole.log(form, this.forms[form]);
+      },
+      abrirBD(){
+        let indexDB = indexedDB.open('db_sistema_academico',1);
+        indexDB.onupgradeneeded = e=>{
+          let req = e.target.result,
+            tblalumnos = req.createObjectStore('tblalumnos',{keyPath: 'idAlumno'}),
+            tblmaterias = req.createObjectStore('tblmaterias',{keyPath: 'idMateria'});
+            
+            tblalumnos.createIndex('idAlumno','idAlumno',{unique:true});
+            tblalumnos.createIndex('codigo','codigo',{unique:true});
+        };
+        indexDB.onsuccess = e=>{
+          this.db = e.target.result;
+          this.listarAlumnos();
+        };
+        indexDB.onerror = e=>{
+          console.error('ERROR al crear, abrir la BD',e);
+        };
+      },
+      abrirStore(store,modo){
+        let ltx = this.db.transaction(store,modo);
+        return ltx.objectStore(store);
+      }
+    
+     
+    },
+    created(){
+      this.abrirBD();
+      //this.listarAlumnos();
+    }
+  }).mount('#app')
+</script>
+  
+</body>
+</html>

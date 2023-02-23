@@ -38,7 +38,7 @@
         <div class="row p-1" >
             <div class="col-3 col-md-2">Nonbre :</div>
             <div class="col-9 col-md-3">
-              <input class="form-control" type="text" v-model="libro.nonbre" name="txtNonbreLibri" id="txtNonbreLibro">
+              <input class="form-control" type="text" v-model="libro.nonbre" name="txtNonbreLibro" id="txtNonbreLibro">
           </div>
         </div>
         <div class="row p-1">
@@ -132,6 +132,7 @@
             }
           }
         },
+
         methods:{
           nuevoLibro(){
             this.accion = 'nuevo';
@@ -170,22 +171,27 @@
             
           },
           eliminarLibro(libro){
-            if(confirm(`Esta seguro de eliminar el docente ${libro.nombre}?`)){
-              this.accion = "eliminar";
-              this.libro = libro;
-              this.guardarLibro();
-    
-            }
+            if(confirm(`Esta seguro de eliminar el docente ${libro.nonbre}?`)){
+            let store = this.abrirStore('tbllibro','readwrite'),
+                req = store.delete(libro.idAutor);
+                req.onsuccess = res=>{
+                  this.listarLibro();
+                };
+                req.onerror = err=>{
+                  console.error('ERROR al guardar libro')
+                };
+          }
           },
           listarLibro(){
             let store = this.abrirStore('tbllibro','readonly'),
                 data = store.getAll();
             data.onsuccess = resp=>{
-              this.libro = data.result;
+              this.libros = data.result.filter(libro=>libro.autor.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || libro.nonbre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1);
+        
             };
           },
           abrirBD(){
-            let indexDB = indexedDB.open('db_codigo_estudiante',1);
+            let indexDB = indexedDB.open('db_usis055521_dina',1);
             indexDB.onupgradeneeded = e=>{
               let req = e.target.result,
                 tbllibro = req.createObjectStore('tbllibro',{keyPath: 'idAutor'});
